@@ -36,25 +36,25 @@ informative:
 
 --- abstract
 
-The Robots Exclusion Protocol defined in RFC9309 specifies the user-agent
+The Robots Exclusion Protocol defined in [RFC9309] specifies the user-agent
 rule for targeting automatic clients either by prefix matching their
 self-defined product token or by a global rule * that matches all clients.
 
-This document extends RFC9309 by defining a new rule for targeting
+This document extends [RFC9309] by defining a new rule for targeting
 automatic clients based on the clients' purpose for accessing the service.
 
 --- middle
 
 # Introduction
 
-[fill in]
+(fill in)
 
 # Specification
 
 We define user-agent-purpose as the new rule with a predefined set of
 values. The values are registered with IANA at ...
 Below is an Augmented Backus-Naur Form (ABNF) description, as described
-in RFC5234.
+in [RFC5234].
 
 ~~~~~~~~~~
 purpose = *WS "user-agent-purpose" *WS ":" *WS purpose-token NL
@@ -66,7 +66,7 @@ WS = %x20 / %x09
 ## user-agent-purpose
 
 The `user-agent-purpose` rule is semantically equivalent to the
-`user-agent` rule defined in Section 2.2.1. of RFC9309. As the
+`user-agent` rule defined in Section 2.2.1. of [RFC9309]. As the
 `user-agent` rule, `user-agent-purpose` acts as a starter of rule
 groups.
 
@@ -74,7 +74,7 @@ groups.
 
 The `user-agent-purpose` token MUST be a substring of the
 identification string that the automatic client sends to the service.
-For example, in the case of HTTP RFC9110, the purpose token MUST be
+For example, in the case of HTTP [RFC9110], the purpose token MUST be
 a substring in the User-Agent header, along with the product token.
 Here's an example of a User-Agent HTTP request header with the
 purpose token by the product token:
@@ -98,11 +98,9 @@ according to Section X.
 
 {::boilerplate bcp14-tagged}
 
-
 # Security Considerations
 
-The security considerations are the same as in the parent RFC9309.
-
+The security considerations are the same as in the parent [RFC9309].
 
 # IANA Considerations
 
