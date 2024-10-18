@@ -1,0 +1,192 @@
+
+
+
+
+Network Working Group                                          G. Illyes
+Internet-Draft                                               Google LLC.
+Intended status: Informational                           18 October 2024
+Expires: 21 April 2025
+
+
+         Robots Exclusion Protocol User Agent Purpose Extension
+                    draft-illyes-rep-purpose-latest
+
+Abstract
+
+   The Robots Exclusion Protocol defined in [RFC9309] specifies the
+   user-agent rule for targeting automatic clients either by prefix
+   matching their self-defined product token or by a global rule * that
+   matches all clients.
+
+   This document extends [RFC9309] by defining a new rule for targeting
+   automatic clients based on the clients' purpose for accessing the
+   service.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://garyillyes.github.io/ietf-rep-purpose/draft-illyes-rep-
+   purpose.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-illyes-rep-purpose/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/garyillyes/ietf-rep-purpose.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 21 April 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Specification
+     2.1.  user-agent-purpose
+     2.2.  user-agent-purpose tokens
+   3.  Conventions and Definitions
+   4.  Security Considerations
+   5.  IANA Considerations
+   6.  Examples
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   (fill in)
+
+2.  Specification
+
+   We define user-agent-purpose as the new rule with a predefined set of
+   values.  The values are registered with IANA at ... Below is an
+   Augmented Backus-Naur Form (ABNF) description, as described in
+   [RFC5234].
+
+purpose = *WS "user-agent-purpose" *WS ":" *WS purpose-token NL
+purpose-token = "EXAMPLE-PURPOSE-1" /"EXAMPLE-PURPOSE-2" / "EXAMPLE-PURPOSE-3" ; but check IANA for full list
+NL = %x0D / %x0A / %x0D.0A
+WS = %x20 / %x09
+
+2.1.  user-agent-purpose
+
+   The user-agent-purpose rule is semantically equivalent to the user-
+   agent rule defined in Section 2.2.1. of [RFC9309].  As the user-agent
+   rule, user-agent-purpose acts as a starter of rule groups.
+
+2.2.  user-agent-purpose tokens
+
+   The user-agent-purpose token MUST be a substring of the
+   identification string that the automatic client sends to the service.
+   For example, in the case of HTTP [RFC9110], the purpose token MUST be
+   a substring in the User-Agent header, along with the product token.
+   Here's an example of a User-Agent HTTP request header with the
+   purpose token by the product token:
+
+User-Agent: Mozilla/5.0 (compatible; ExampleBot/0.1; ExamplePurpose; https://www.example.com/bot.html)
+
+   The purpose token MUST be one of the tokens registered with IANA.
+   Unrecognized tokens MAY be discarded by parsers.  Crawlers MUST use
+   case-insensitive matching to find the group that matches the purpose
+   token and obey the rules of the group.  If there's a group that
+   matches the product token of the automatic client, the client SHOULD
+   obey that group.  If no matching group exists, crawlers MUST obey the
+   group with a user-agent line with the "*" value, if present.  If
+   there is more than one group matching the user-agent-purpose, the
+   matching groups' rules MUST be combined into one group and parsed
+   according to Section X.
+
+3.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+4.  Security Considerations
+
+   The security considerations are the same as in the parent [RFC9309].
+
+5.  IANA Considerations
+
+   The vocabulary used as purpose tokens are registered at IANA-URL.
+
+6.  Examples
+
+# robots.txt with purpose
+# FooBot and all bots that are crawling for EXAMPLE-PURPOSE-1 are disallowed.
+User-Agent: FooBot
+User-Agent-Purpose: EXAMPLE-PURPOSE-1
+Disallow: /
+# EXAMPLE-PURPOSE-2 crawlers are allowed.
+User-Agent-Purpose: EXAMPLE-PURPOSE-2
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "HTTP Semantics", STD 97, RFC 9110,
+              DOI 10.17487/RFC9110, June 2022,
+              <https://www.rfc-editor.org/rfc/rfc9110>.
+
+   [RFC9309]  Koster, M., Illyes, G., Zeller, H., and L. Sassman,
+              "Robots Exclusion Protocol", RFC 9309,
+              DOI 10.17487/RFC9309, September 2022,
+              <https://www.rfc-editor.org/rfc/rfc9309>.
+
+7.2.  Informative References
+
+   [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234,
+              DOI 10.17487/RFC5234, January 2008,
+              <https://www.rfc-editor.org/rfc/rfc5234>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Gary Illyes
+   Google LLC.
+   Email: garyillyes@google.com
