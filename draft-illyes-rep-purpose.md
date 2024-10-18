@@ -30,7 +30,7 @@ author:
 normative:
   RFC9110:
   RFC9309:
-  
+
 informative:
   RFC5234:
 
