@@ -28,19 +28,19 @@ author:
     email: "garyillyes@google.com"
 
 normative:
-  RFC9110
-  RFC9309
+  RFC9110:
+  RFC9309:
   
 informative:
-  RFC523
+  RFC5234:
 
 --- abstract
 
 The Robots Exclusion Protocol defined in RFC9309 specifies the user-agent
-rule for targeting automatic clients either by prefix matching their 
+rule for targeting automatic clients either by prefix matching their
 self-defined product token or by a global rule * that matches all clients.
 
-This document extends RFC9309 by defining a new rule for targeting 
+This document extends RFC9309 by defining a new rule for targeting
 automatic clients based on the clients' purpose for accessing the service.
 
 --- middle
@@ -51,9 +51,9 @@ automatic clients based on the clients' purpose for accessing the service.
 
 # Specification
 
-We define user-agent-purpose as the new rule with a predefined set of 
+We define user-agent-purpose as the new rule with a predefined set of
 values. The values are registered with IANA at ...
-Below is an Augmented Backus-Naur Form (ABNF) description, as described 
+Below is an Augmented Backus-Naur Form (ABNF) description, as described
 in RFC5234.
 
 ~~~~~~~~~~
@@ -65,32 +65,32 @@ WS = %x20 / %x09
 
 ## user-agent-purpose
 
-The `user-agent-purpose` rule is semantically equivalent to the 
-`user-agent` rule defined in Section 2.2.1. of RFC9309. As the 
-`user-agent` rule, `user-agent-purpose` acts as a starter of rule 
-groups. 
+The `user-agent-purpose` rule is semantically equivalent to the
+`user-agent` rule defined in Section 2.2.1. of RFC9309. As the
+`user-agent` rule, `user-agent-purpose` acts as a starter of rule
+groups.
 
 ## user-agent-purpose tokens
 
-The `user-agent-purpose` token MUST be a substring of the 
-identification string that the automatic client sends to the service. 
-For example, in the case of HTTP RFC9110, the purpose token MUST be 
-a substring in the User-Agent header, along with the product token. 
-Here's an example of a User-Agent HTTP request header with the 
-purpose token by the product token: 
+The `user-agent-purpose` token MUST be a substring of the
+identification string that the automatic client sends to the service.
+For example, in the case of HTTP RFC9110, the purpose token MUST be
+a substring in the User-Agent header, along with the product token.
+Here's an example of a User-Agent HTTP request header with the
+purpose token by the product token:
 
 ~~~~~~~~~~
 User-Agent: Mozilla/5.0 (compatible; ExampleBot/0.1; ExamplePurpose; https://www.example.com/bot.html)
 ~~~~~~~~~~
 
-The purpose token MUST be one of the tokens registered with IANA. 
-Unrecognized tokens MAY be discarded by parsers. Crawlers MUST use 
-case-insensitive matching to find the group that matches the purpose 
-token and obey the rules of the group. If there's a group that 
-matches the product token of the automatic client, the client SHOULD 
-obey that group. If no matching group exists, crawlers MUST obey the 
+The purpose token MUST be one of the tokens registered with IANA.
+Unrecognized tokens MAY be discarded by parsers. Crawlers MUST use
+case-insensitive matching to find the group that matches the purpose
+token and obey the rules of the group. If there's a group that
+matches the product token of the automatic client, the client SHOULD
+obey that group. If no matching group exists, crawlers MUST obey the
 group with a user-agent line with the "*" value, if present.
-If there is more than one group matching the `user-agent-purpose`, 
+If there is more than one group matching the `user-agent-purpose`,
 the matching groups' rules MUST be combined into one group and parsed
 according to Section X.
 
@@ -114,7 +114,7 @@ The vocabulary used as purpose tokens are registered at IANA-URL.
 # FooBot and all bots that are crawling for EXAMPLE-PURPOSE-1 are disallowed.
 User-Agent: FooBot
 User-Agent-Purpose: EXAMPLE-PURPOSE-1
-Disallow: / 
+Disallow: /
 # EXAMPLE-PURPOSE-2 crawlers are allowed.
 User-Agent-Purpose: EXAMPLE-PURPOSE-2
 ~~~~~~~~~~
