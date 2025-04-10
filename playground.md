@@ -1,11 +1,16 @@
 Hung up on something you mentioned in passing, namely if we're
-updating X-Robots-Tag then might as well try to move awy from it.
+updating X-Robots-Tag then might as well try to move away from it.
 We still need to support some of its old values along with the 
 new ones, which makes things pretty ugly, but anyway, we MUST 
 supoort in some way the GDPR controls but having two places for
 specifying stuff for search is going to be a nightmare (for the
 ecosystem). It seems like we should scrifice some of the clean 
 design for ensuring that we don't confuse the ecosystem too much.
+
+i.e. I'd give up on `robots-tag` header if we can figure out how
+to shove (some of) its things into a new content dash header to
+ensure there we're not having two places to specify aiprefs, at
+least at launch time.
 
 HTTP response for `user-agent` Bingbot, with `vary` and the `search`
 vocab:
